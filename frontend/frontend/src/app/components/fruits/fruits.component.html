@@ -1,0 +1,72 @@
+<div class="search-container">
+  <button (click)="openToAdd()" class="add-btn">Adicionar</button>
+  <div class="search-item">
+    <label for="">Quantidade: </label>
+    <input type="number" required [(ngModel)]="this.fruitToSearch.quantity" />
+  </div>
+  <div class="search-item">
+    <label for="">Origem: </label>
+    <input type="text" [(ngModel)]="this.fruitToSearch.origin" />
+  </div>
+  <div class="search-item">
+    <label for="">Data da Importação: </label>
+    <input type="datetime-local" [(ngModel)]="this.fruitToSearch.importDate" />
+  </div>
+</div>
+<div class="actions-btn">
+  <button (click)="search(this.fruitToSearch)" class="search-btn">
+    Pesquisar
+  </button>
+</div>
+
+<div class="add-container" *ngIf="this.addMode">
+  <h2>Adicionar</h2>
+  <label
+    >Quantidade:
+    <input type="number" name="" [(ngModel)]="this.newFruit.quantity"
+  /></label>
+  <label
+    >Origem: <input type="text" name="" [(ngModel)]="this.newFruit.origin"
+  /></label>
+  <label
+    >Data da Importação:
+    <input type="datetime-local" name="" [(ngModel)]="this.newFruit.importDate"
+  /></label>
+  <button (click)="add(newFruit)">Salvar</button>
+  <button (click)="view()">Cancelar</button>
+</div>
+
+<div class="grid-container">
+  <div *ngFor="let fruit of fruits" class="container">
+    <ul *ngIf="!this.editMode">
+      <li><span>Quantidade:</span> {{ fruit.quantity }}</li>
+      <li><span>Origem:</span> {{ fruit.origin }}</li>
+      <li>
+        <span>Data da importação:</span>
+        {{ this.fruit.importDate }}
+      </li>
+      <button class="editarBtn btn" (click)="openToEdit()">Editar</button>
+      <button class="excluirBtn btn" (click)="delete(this.fruit)">
+        Excluir
+      </button>
+    </ul>
+    <ul *ngIf="this.editMode">
+      <li>
+        <span>Quantidade:</span>
+        <input type="text" [(ngModel)]="this.fruit.quantity" />
+      </li>
+      <li>
+        <span>Origem:</span>
+        <input type="text" [(ngModel)]="this.fruit.origin" />
+      </li>
+      <li>
+        <span>Data da importação:</span
+        ><input type="datetime-local" [(ngModel)]="this.fruit.importDate" />
+      </li>
+      <button class="editarBtn btn" (click)="update(this.fruit)">Salvar</button>
+      <button class="excluirBtn btn" (click)="view()">Cancelar</button>
+    </ul>
+    <div class="actions-container" *ngIf="!editMode"></div>
+    <div class="actions-container" *ngIf="editMode"></div>
+  </div>
+</div>
