@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { Fruit, FruitParams } from 'src/app/interface/fruit';
 import { FruitService } from 'src/app/service/fruit.service';
@@ -60,24 +61,38 @@ export class FruitsComponent implements OnInit {
   }
 
   add(newFruit: Fruit) {
-    this.service.add(newFruit).subscribe(() => {
-      this.newFruit = { origin: '', quantity: 0, importDate: new Date() };
-      this.clearFruits();
-    });
+    this.service.add(newFruit).subscribe(
+      () => {
+        this.newFruit = { origin: '', quantity: 0, importDate: new Date() };
+        this.clearFruits();
+      },
+      (error) => {
+        this.showErrors(error);
+      }
+    );
   }
 
   update(fruit: Fruit) {
-    debugger;
-    this.service.update(fruit).subscribe(() => {
-      this.editMode = false;
-      this.clearFruits();
-    });
+    this.service.update(fruit).subscribe(
+      () => {
+        this.editMode = false;
+        this.clearFruits();
+      },
+      (error) => {
+        this.showErrors(error);
+      }
+    );
   }
 
   delete(fruit: Fruit) {
-    this.service.delete(fruit).subscribe(() => {
-      this.clearFruits();
-    });
+    this.service.delete(fruit).subscribe(
+      () => {
+        this.clearFruits();
+      },
+      (error) => {
+        this.showErrors(error);
+      }
+    );
   }
 
   enableSearchMode() {
@@ -88,9 +103,14 @@ export class FruitsComponent implements OnInit {
 
   search(fruit: FruitParams) {
     this.enableSearchMode();
-    this.service.filterComposed(fruit).subscribe((fruits) => {
-      this.fruits = fruits;
-    });
+    this.service.filterComposed(fruit).subscribe(
+      (fruits) => {
+        this.fruits = fruits;
+      },
+      (error) => {
+        this.showErrors(error);
+      }
+    );
   }
 
   convertToDefaultDate(newDate: string): string {
@@ -104,5 +124,9 @@ export class FruitsComponent implements OnInit {
     newDateFormat = String(`${year}-${month}-${day}T${hours}:${minutes}`);
 
     return newDateFormat;
+  }
+
+  showErrors(httpErrorResponse: HttpErrorResponse) {
+    alert(httpErrorResponse.error);
   }
 }
