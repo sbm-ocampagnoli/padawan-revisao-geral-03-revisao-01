@@ -113,7 +113,8 @@ public class FruitRepository {
 		}
 	}
 
-	public List<Fruit> filterComposed(String origin, int quantity, LocalDateTime importDate) {
+	public List<Fruit> filterComposed(String origin, int quantity, LocalDateTime initialImportDate,
+			LocalDateTime finalImportDate) {
 		List<Fruit> fruits = new ArrayList<Fruit>();
 
 		String sql = "SELECT id, quantity, origin, importDate FROM fruit WHERE 1=1";
@@ -126,7 +127,12 @@ public class FruitRepository {
 			sql += " AND quantity = ?";
 		}
 
-		if (importDate != null) {
+		if (finalImportDate != null && initialImportDate != null) {
+
+			sql += " AND importDate BETWEEN ? AND ?";
+			System.out.println(sql);
+		}
+		else if (initialImportDate != null) {
 			sql += " AND importDate = ?";
 		}
 
@@ -135,16 +141,21 @@ public class FruitRepository {
 			int paramIndex = 1;
 
 			if (!origin.isEmpty() && origin != null) {
-				pstm.setString(paramIndex++, "%"+ origin + "%");
+				pstm.setString(paramIndex++, "%" + origin + "%");
 			}
 
 			if (quantity != 0 && quantity > -1) {
 				pstm.setInt(paramIndex++, quantity);
-
 			}
 
-			if (importDate != null) {
-				pstm.setObject(paramIndex++, importDate.withSecond(0).withNano(0));
+			if (initialImportDate != null && finalImportDate != null) {
+				pstm.setObject(paramIndex++, initialImportDate.withSecond(0).withNano(0));
+				pstm.setObject(paramIndex++, finalImportDate.withSecond(0).withNano(0));
+			} 
+			else if (initialImportDate != null) {
+
+				pstm.setObject(paramIndex++, initialImportDate.withSecond(0).withNano(0));
+
 			}
 
 			pstm.execute();

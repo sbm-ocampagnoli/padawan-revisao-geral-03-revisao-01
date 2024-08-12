@@ -37,9 +37,10 @@ public class FruitController {
 	(
 	@RequestParam(required = false, defaultValue = "") String origin,
 	@RequestParam(required = false, defaultValue = "") int quantity,
-	@RequestParam(required = false, defaultValue = "") LocalDateTime importDate
+	@RequestParam(required = false, defaultValue = "") LocalDateTime initialImportDate,
+	@RequestParam(required = false, defaultValue = "") LocalDateTime finalImportDate
 	) {
-		return this.service.filterComposed(origin, quantity, importDate);
+		return this.service.filterComposed(origin, quantity, initialImportDate, finalImportDate);
 	}
 
 	@PostMapping

@@ -42,5 +42,4 @@ public class Fruit {
 	public void setImportDate(LocalDateTime importDate) {
 		this.importDate = importDate;
 	}
-
 }

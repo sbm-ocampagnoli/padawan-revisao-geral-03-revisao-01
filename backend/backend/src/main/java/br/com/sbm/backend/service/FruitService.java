@@ -46,7 +46,7 @@ public class FruitService {
 
 	}
 
-	public List<Fruit> filterComposed(String origin, int quantity, LocalDateTime importDate) {
-		return this.repository.filterComposed(origin, quantity, importDate);
+	public List<Fruit> filterComposed(String origin, int quantity, LocalDateTime initialImportDate, LocalDateTime finalImportDate ) {
+		return this.repository.filterComposed(origin, quantity, initialImportDate, finalImportDate);
 	}
 }
