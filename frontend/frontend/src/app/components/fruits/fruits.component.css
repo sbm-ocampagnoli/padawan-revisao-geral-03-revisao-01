@@ -1,5 +1,5 @@
 body {
-  background-color: #2C2C2C; /* Cor de fundo do body */
+  background-color: #2C2C2C;
 }
 
 .search-container {
@@ -86,12 +86,19 @@ input {
   background-color: #56B0A2;
 }
 
+.grid-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .container {
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
   flex-direction: row;
-  margin: 20vh;
+  margin: 5vh 0 5vh 22vh;
+
 }
 
 ul {

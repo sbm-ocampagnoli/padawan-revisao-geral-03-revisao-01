@@ -47,6 +47,11 @@ export class FruitsComponent implements OnInit {
   view() {
     this.editMode = false;
     this.addMode = false;
+    this.fruits.forEach((fruit) => {
+      fruit.importDate = this.service.convertDateToBrazilFormat(
+        new Date(fruit.importDate as Date)
+      );
+    });
   }
 
   add(newFruit: Fruit) {
