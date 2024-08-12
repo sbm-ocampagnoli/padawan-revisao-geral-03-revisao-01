@@ -33,14 +33,12 @@ public class FruitController {
 	}
 
 	@GetMapping("/filter")
-	public List<Fruit> filterComposed
-	(
-	@RequestParam(required = false, defaultValue = "") String origin,
-	@RequestParam(required = false, defaultValue = "") Integer quantity,
-	@RequestParam(required = false, defaultValue = "") LocalDateTime initialImportDate,
-	@RequestParam(required = false, defaultValue = "") LocalDateTime finalImportDate
-	) {
-		return this.service.filterComposed(origin, quantity, initialImportDate, finalImportDate);
+	public ResponseEntity<List<Fruit>> filterComposed(@RequestParam(required = false, defaultValue = "") String origin,
+			@RequestParam(required = false, defaultValue = "") Integer quantity,
+			@RequestParam(required = false, defaultValue = "") LocalDateTime initialImportDate,
+			@RequestParam(required = false, defaultValue = "") LocalDateTime finalImportDate) throws Exception {
+		List<Fruit> filteredFruits = this.service.filterComposed(origin, quantity, initialImportDate, finalImportDate);
+		return ResponseEntity.ok(filteredFruits);
 	}
 
 	@PostMapping

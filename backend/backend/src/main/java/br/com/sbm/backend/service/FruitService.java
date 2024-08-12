@@ -8,16 +8,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
+import br.com.sbm.backend.exceptions.InvalidDateRangeException;
 import br.com.sbm.backend.model.Fruit;
 import br.com.sbm.backend.repository.FruitRepository;
+import br.com.sbm.backend.validators.LocalDateTimeValidators;
 
 @Service
 public class FruitService {
 
+	private LocalDateTimeValidators localDateTimeValidators;
+
 	@Autowired
 	private FruitRepository repository;
+
+	@Autowired
+	public FruitService(LocalDateTimeValidators localDateTimeValidators) {
+		this.localDateTimeValidators = localDateTimeValidators;
+	}
 
 	public List<Fruit> getAll() throws SQLException {
 		return this.repository.getAll();
@@ -46,7 +54,14 @@ public class FruitService {
 
 	}
 
-	public List<Fruit> filterComposed(String origin, Integer quantity, LocalDateTime initialImportDate, LocalDateTime finalImportDate ) {
+	public List<Fruit> filterComposed(String origin, Integer quantity, LocalDateTime initialImportDate,
+			LocalDateTime finalImportDate) throws Exception {
+
+		if (!localDateTimeValidators.initialDateAndFinalDateIsNull(initialImportDate, finalImportDate)) {
+			if (!localDateTimeValidators.initialDateIsLessThenFinalDate(initialImportDate, finalImportDate)) {
+				throw new InvalidDateRangeException("Data Final não pode ser maior que a Data Inicial");
+			}
+		}
 		return this.repository.filterComposed(origin, quantity, initialImportDate, finalImportDate);
 	}
 }
