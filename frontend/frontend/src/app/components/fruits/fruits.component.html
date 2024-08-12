@@ -9,8 +9,18 @@
     <input type="text" [(ngModel)]="this.fruitToSearch.origin" />
   </div>
   <div class="search-item">
-    <label for="">Data da Importação: </label>
-    <input type="datetime-local" [(ngModel)]="this.fruitToSearch.importDate" />
+    <label for="">Data inicial da Importação: </label>
+    <input
+      type="datetime-local"
+      [(ngModel)]="this.fruitToSearch.initialImportDate"
+    />
+  </div>
+  <div class="search-item">
+    <label for="">Data final da Importação: </label>
+    <input
+      type="datetime-local"
+      [(ngModel)]="this.fruitToSearch.finalImportDate"
+    />
   </div>
 </div>
 <div class="actions-btn">

@@ -4,3 +4,10 @@ export interface Fruit {
   origin: string;
   importDate: Date | string | undefined;
 }
+
+export interface FruitParams {
+  quantity: number;
+  origin: string;
+  initialImportDate: Date | string | undefined;
+  finalImportDate: Date | string | undefined;
+}

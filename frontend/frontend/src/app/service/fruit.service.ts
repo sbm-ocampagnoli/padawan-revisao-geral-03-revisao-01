@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Fruit } from '../interface/fruit';
+import { Fruit, FruitParams } from '../interface/fruit';
 
 @Injectable({
   providedIn: 'root',
@@ -27,14 +27,26 @@ export class FruitService {
     return this.http.delete<any>(`${this.url}/${fruit.id}`);
   }
 
-  filterComposed(fruit: Fruit): Observable<Fruit[]> {
+  filterComposed(fruit: FruitParams): Observable<Fruit[]> {
     let params = new HttpParams();
 
-    if (fruit.importDate) {
-      let dateConverted = this.convertToDateTime(fruit.importDate as Date);
-      params = params.set('importDate', dateConverted);
+    if (fruit.initialImportDate && fruit.finalImportDate) {
+      let initialImportDateConverted = this.convertToDateTime(
+        fruit.initialImportDate as Date
+      );
+      let finalImportDateConverted = this.convertToDateTime(
+        fruit.finalImportDate as Date
+      );
+      params = params.set('initialImportDate', initialImportDateConverted);
+      params = params.set('finalImportDate', finalImportDateConverted);
+    } else if (fruit.initialImportDate) {
+      let initialImportDateConverted = this.convertToDateTime(
+        fruit.initialImportDate as Date
+      );
+      params = params.set('initialImportDate', initialImportDateConverted);
     } else {
-      params = params.set('importDate', '');
+      params = params.set('initialImportDate', '');
+      params = params.set('finalImportDate', '');
     }
 
     params = params.set('origin', fruit.origin);

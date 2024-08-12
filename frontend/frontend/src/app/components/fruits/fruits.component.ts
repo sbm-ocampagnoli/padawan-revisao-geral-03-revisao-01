@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Fruit } from 'src/app/interface/fruit';
+import { Fruit, FruitParams } from 'src/app/interface/fruit';
 import { FruitService } from 'src/app/service/fruit.service';
 
 @Component({
@@ -12,7 +12,12 @@ export class FruitsComponent implements OnInit {
   editMode: boolean = false;
   addMode: boolean = false;
   newFruit: Fruit = { origin: '', importDate: new Date(), quantity: 0 };
-  fruitToSearch: Fruit = { origin: '', importDate: undefined, quantity: 0 };
+  fruitToSearch: FruitParams = {
+    origin: '',
+    initialImportDate: undefined,
+    finalImportDate: undefined,
+    quantity: 0,
+  };
 
   constructor(private service: FruitService) {}
 
@@ -81,7 +86,7 @@ export class FruitsComponent implements OnInit {
     this.clearFruits();
   }
 
-  search(fruit: Fruit) {
+  search(fruit: FruitParams) {
     this.enableSearchMode();
     this.service.filterComposed(fruit).subscribe((fruits) => {
       this.fruits = fruits;
