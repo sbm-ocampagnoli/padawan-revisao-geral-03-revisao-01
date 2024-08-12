@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Fruit {
 	private Long id;
-	private int quantity;
+	private Integer quantity;
 	private String origin;
 	private LocalDateTime importDate;
 
@@ -19,11 +19,11 @@ public class Fruit {
 		this.id = id;
 	}
 
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(int quantity) {
+	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
 

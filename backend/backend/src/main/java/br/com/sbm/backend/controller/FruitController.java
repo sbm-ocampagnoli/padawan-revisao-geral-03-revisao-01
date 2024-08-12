@@ -36,7 +36,7 @@ public class FruitController {
 	public List<Fruit> filterComposed
 	(
 	@RequestParam(required = false, defaultValue = "") String origin,
-	@RequestParam(required = false, defaultValue = "") int quantity,
+	@RequestParam(required = false, defaultValue = "") Integer quantity,
 	@RequestParam(required = false, defaultValue = "") LocalDateTime initialImportDate,
 	@RequestParam(required = false, defaultValue = "") LocalDateTime finalImportDate
 	) {

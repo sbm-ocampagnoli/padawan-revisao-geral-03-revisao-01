@@ -113,7 +113,7 @@ public class FruitRepository {
 		}
 	}
 
-	public List<Fruit> filterComposed(String origin, int quantity, LocalDateTime initialImportDate,
+	public List<Fruit> filterComposed(String origin, Integer quantity, LocalDateTime initialImportDate,
 			LocalDateTime finalImportDate) {
 		List<Fruit> fruits = new ArrayList<Fruit>();
 
@@ -123,16 +123,14 @@ public class FruitRepository {
 			sql += " AND origin LIKE ?";
 		}
 
-		if (quantity != 0 && quantity > -1) {
+		if (quantity != null && quantity > 0) {
 			sql += " AND quantity = ?";
 		}
 
 		if (finalImportDate != null && initialImportDate != null) {
-
 			sql += " AND importDate BETWEEN ? AND ?";
 			System.out.println(sql);
-		}
-		else if (initialImportDate != null) {
+		} else if (initialImportDate != null) {
 			sql += " AND importDate = ?";
 		}
 
@@ -144,18 +142,15 @@ public class FruitRepository {
 				pstm.setString(paramIndex++, "%" + origin + "%");
 			}
 
-			if (quantity != 0 && quantity > -1) {
+			if (quantity != null && quantity > 0) {
 				pstm.setInt(paramIndex++, quantity);
 			}
 
 			if (initialImportDate != null && finalImportDate != null) {
 				pstm.setObject(paramIndex++, initialImportDate.withSecond(0).withNano(0));
 				pstm.setObject(paramIndex++, finalImportDate.withSecond(0).withNano(0));
-			} 
-			else if (initialImportDate != null) {
-
+			} else if (initialImportDate != null) {
 				pstm.setObject(paramIndex++, initialImportDate.withSecond(0).withNano(0));
-
 			}
 
 			pstm.execute();
