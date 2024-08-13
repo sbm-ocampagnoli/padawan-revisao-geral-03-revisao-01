@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import br.com.sbm.backend.controller.form.FruitDTO;
 import br.com.sbm.backend.exceptions.InvalidDateRangeException;
 import br.com.sbm.backend.model.Fruit;
 import br.com.sbm.backend.repository.FruitRepository;
@@ -31,16 +32,15 @@ public class FruitService {
 		return this.repository.getAll();
 	}
 
-	public ResponseEntity<Fruit> save(Fruit form) throws SQLException {
-		Long idCreated = this.repository.save(form);
-		if (idCreated != 0) {
-			return new ResponseEntity<>(form, HttpStatus.CREATED);
-
+	public ResponseEntity<Fruit> save(FruitDTO form) throws SQLException {
+		Fruit fruitEdited = this.repository.save(form);
+		if (fruitEdited.getId() != null) {
+			return new ResponseEntity<>(fruitEdited, HttpStatus.CREATED);
 		}
-		return new ResponseEntity<>(form, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(fruitEdited, HttpStatus.BAD_REQUEST);
 	}
 
-	public ResponseEntity<Fruit> update(Long id, Fruit form) throws SQLException {
+	public ResponseEntity<Fruit> update(Long id, FruitDTO form) throws SQLException {
 		Fruit fruitUpdated = this.repository.update(id, form);
 
 		if (fruitUpdated.getId() != 0) {

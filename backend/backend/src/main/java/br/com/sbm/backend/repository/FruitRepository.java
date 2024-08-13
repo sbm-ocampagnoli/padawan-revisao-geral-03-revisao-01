@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
+import br.com.sbm.backend.controller.form.FruitDTO;
 import br.com.sbm.backend.model.Fruit;
 
 @Repository
@@ -48,17 +49,17 @@ public class FruitRepository {
 					fruits.add(fruit);
 				}
 			} catch (Exception e) {
-				new SQLException(e);
+				throw new SQLException(e);
 			}
 		} catch (Exception e) {
-			new SQLException(e);
+			throw new SQLException(e);
 		}
 		return fruits;
 	}
 
-	public Long save(Fruit form) throws SQLException {
+	public Fruit save(FruitDTO form) throws SQLException {
 		String sql = "INSERT INTO fruit (quantity, origin, importDate) " + "VALUES (?, ?, ?)";
-
+		Fruit fruitEdited = new Fruit();
 		try (PreparedStatement pstm = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
 			pstm.setInt(1, form.getQuantity());
 			pstm.setString(2, form.getOrigin());
@@ -68,21 +69,22 @@ public class FruitRepository {
 
 			try (ResultSet rst = pstm.getGeneratedKeys()) {
 				if (rst.next()) {
-					form.setId(rst.getLong(1));
+					fruitEdited.setId(rst.getLong(1));
 				}
-
 			} catch (Exception e) {
-				new SQLException(e);
+				throw new SQLException("Erro ao obter a chave gerada", e);
 			}
 
 		} catch (Exception e) {
-			new SQLException(e);
+			throw new SQLException(e);
 		}
-		return form.getId();
+		return fruitEdited;
 	}
 
-	public Fruit update(Long id, Fruit form) throws SQLException {
+	public Fruit update(Long id, FruitDTO form) throws SQLException {
+
 		String sql = "UPDATE fruit SET quantity = ?, origin = ?, importDate = ? WHERE id = ?";
+		Fruit fruitUpdated = new Fruit();
 
 		try (PreparedStatement pstm = connection.prepareStatement(sql)) {
 			pstm.setInt(1, form.getQuantity());
@@ -92,12 +94,20 @@ public class FruitRepository {
 
 			pstm.execute();
 
-			form.setId(id);
+			int rowsAffected = (pstm.executeUpdate());
+			if (rowsAffected == 0) {
+				throw new SQLException("Erro ao atualizar a Fruta");
+
+			}
+			fruitUpdated.setId(id);
+			fruitUpdated.setQuantity(form.getQuantity());
+			fruitUpdated.setOrigin(form.getOrigin());
+			fruitUpdated.setImportDate(form.getImportDate());
 
 		} catch (Exception e) {
-			new SQLException(e);
+			throw new SQLException("Erro ao preparar a atualização", e);
 		}
-		return form;
+		return fruitUpdated;
 	}
 
 	public ResponseEntity<?> delete(Long id) throws SQLException {

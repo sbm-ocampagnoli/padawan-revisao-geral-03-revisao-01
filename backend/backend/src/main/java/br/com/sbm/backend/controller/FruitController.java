@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.sbm.backend.controller.form.FruitDTO;
 import br.com.sbm.backend.model.Fruit;
 import br.com.sbm.backend.service.FruitService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/fruits")
@@ -43,13 +45,13 @@ public class FruitController {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<Fruit> save(@RequestBody Fruit form) throws SQLException {
+	public ResponseEntity<Fruit> save(@Valid @RequestBody FruitDTO form) throws SQLException {
 		return this.service.save(form);
 	}
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<Fruit> update(@PathVariable Long id, @RequestBody Fruit form) throws SQLException {
+	public ResponseEntity<Fruit> update(@PathVariable Long id, @Valid @RequestBody FruitDTO form) throws SQLException {
 		return this.service.update(id, form);
 	}
 
